@@ -1,0 +1,80 @@
+version: "3.8"
+# 项目名
+name: journey-project
+
+services:
+  # journey-client 服务
+  journey-client:
+    # 使用该镜像创建容器
+    image: lishuxue/journey-client
+    # 容器名称
+    container_name: journey-client
+    # 挂载的目录，主机：容器
+    volumes:
+      - /root/project/journey/journey-client/dist:/journey-client/dist
+    # 容器使用的网络
+    networks:
+      - journey-network
+    # 自动重启，除非是手动停止了，否则容器内部错误都会自动重启
+    restart: unless-stopped
+    # 容器不存在时可以先创建镜像
+    # build:
+    #   # 指定Dockerfile的构建上下文
+    #   context: ../journey-client
+    #   dockerfile: Dockerfile
+
+  journey-admin:
+    image: lishuxue/journey-admin
+    container_name: journey-admin
+    volumes:
+      - /root/project/journey/journey-admin/dist:/journey-admin/dist
+    networks:
+      - journey-network
+    restart: unless-stopped
+    # build:
+    #   context: ../journey-admin
+    #   dockerfile: Dockerfile
+
+  journey-nginx:
+    image: lishuxue/journey-nginx
+    container_name: journey-nginx
+    # 容器启动时映射的端口号，主机:容器
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - journey-network
+    # 依赖其他的服务，需要依赖的服务先启动
+    # depends_on:
+    #   - journey-client
+    #   - journey-admin
+    restart: unless-stopped
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+
+  # 启动mongodb数据库，相当于使用下面docker命令
+  # docker run -d --rm --name journey-mongodb -p 27017:27017 -v /root/mongodb/data/db:/data/db -v /root/project/journey/journey-mongodb:/data/configdb -v /root/mongodb/backup:/backup -e MONGO_INITDB_ROOT_USERNAME=lishuxue -e MONGO_INITDB_ROOT_PASSWORD=lishuxue --network journey-project_journey-network mongo --config /data/configdb/mongod.conf
+  journey-mongodb:
+    image: mongo
+    container_name: journey-mongodb
+    ports:
+      - 27017:27017
+    volumes:
+      - /root/mongodb/data/db:/data/db
+      - /root/project/journey/journey-docker/mongodb:/data/configdb
+      - /root/mongodb/backup:/backup # 用来备份
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=lishuxue # 在admin数据库中创建新用户和密码
+      - MONGO_INITDB_ROOT_PASSWORD=lishuxue
+    command: mongod --config /data/configdb/mongod.conf # 用来指定容器启动时要执行的命令，可以覆盖默认命令
+    networks:
+      - journey-network
+    restart: unless-stopped
+
+# 创建一个网络，down命令停止时会删除创建的网络
+networks:
+  journey-network:
+    driver: bridge
+# docker compose up -d 启动
+# docker compose down 停止
