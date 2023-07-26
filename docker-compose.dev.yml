@@ -21,7 +21,7 @@ services:
     # 容器不存在时可以先创建镜像
     # build:
     #   # 指定Dockerfile的构建上下文
-    #   context: ../nginx-client
+    #   context: ./nginx-client
     #   dockerfile: Dockerfile
 
   journey-admin:
@@ -34,12 +34,12 @@ services:
       - journey-network
     restart: unless-stopped
     # build:
-    #   context: ../nginx-admin
+    #   context: ./nginx-admin
     #   dockerfile: Dockerfile
 
-  journey-nginx:
-    image: lishuxue/journey-nginx
-    container_name: journey-nginx
+  journey-nginx-dev:
+    image: journey-nginx-dev
+    container_name: journey-nginx-dev
     # 容器启动时映射的端口号，主机:容器
     ports:
       - 80:80
@@ -47,13 +47,13 @@ services:
     networks:
       - journey-network
     # 依赖其他的服务，需要依赖的服务先启动
-    # depends_on:
-    #   - journey-client
-    #   - journey-admin
+    depends_on:
+      - journey-client
+      - journey-admin
     restart: unless-stopped
-    # build:
-    #   context: ../nginx-proxy
-    #   dockerfile: Dockerfile
+    build:
+      context: ./nginx-proxy
+      dockerfile: Dockerfile.dev
 
   # 启动mongodb数据库，相当于使用下面docker命令
   # docker run -d --rm --name journey-mongodb -p 27017:27017 -v /root/mongodb/data/db:/data/db -v /root/project/journey/journey-mongodb:/data/configdb -v /root/mongodb/backup:/backup -e MONGO_INITDB_ROOT_USERNAME=lishuxue -e MONGO_INITDB_ROOT_PASSWORD=lishuxue --network journey-project_journey-network mongo --config /data/configdb/mongod.conf
@@ -78,5 +78,4 @@ services:
 networks:
   journey-network:
     driver: bridge
-# docker compose up -d 启动
-# docker compose down 停止
+# docker compose -f docker-compose.dev.yml up -d

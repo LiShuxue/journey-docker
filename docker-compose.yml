@@ -20,7 +20,7 @@ services:
     # 容器不存在时可以先创建镜像
     # build:
     #   # 指定Dockerfile的构建上下文
-    #   context: ../nginx-client
+    #   context: ./nginx-client
     #   dockerfile: Dockerfile
 
   journey-admin:
@@ -32,7 +32,7 @@ services:
       - journey-network
     restart: unless-stopped
     # build:
-    #   context: ../nginx-admin
+    #   context: ./nginx-admin
     #   dockerfile: Dockerfile
 
   journey-nginx:
@@ -45,12 +45,12 @@ services:
     networks:
       - journey-network
     # 依赖其他的服务，需要依赖的服务先启动
-    # depends_on:
-    #   - journey-client
-    #   - journey-admin
+    depends_on:
+      - journey-client
+      - journey-admin
     restart: unless-stopped
     # build:
-    #   context: ../nginx-proxy
+    #   context: ./nginx-proxy
     #   dockerfile: Dockerfile
 
   # 启动mongodb数据库，相当于使用下面docker命令
