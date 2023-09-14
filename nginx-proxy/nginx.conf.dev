@@ -77,9 +77,9 @@ http {
         # 以/oneinfo/开头的请求，代理到one的图片连接，并手动设置host，referer，解决防外链问题
         location ^~ /oneinfo/ {
             rewrite ^/oneinfo/(.*)$ /$1 break; 
-            proxy_pass http://image.wufazhuce.com;
+            proxy_pass https://image.wufazhuce.com;
             proxy_set_header Host image.wufazhuce.com;
-            proxy_set_header Referer http://image.wufazhuce.com;
+            proxy_set_header Referer https://image.wufazhuce.com;
         }
 
         # 后台管理页面
