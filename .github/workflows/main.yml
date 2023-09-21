@@ -1,4 +1,4 @@
-name: Continuous Deploy # action名称
+name: main # action名称
 
 on: # 在push代码的时候运行此action
   push:
