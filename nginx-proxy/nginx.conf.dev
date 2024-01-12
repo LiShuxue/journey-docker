@@ -59,8 +59,8 @@ http {
         add_header Strict-Transport-Security "max-age=63072000; includeSubdomains;";
         add_header Content-Security-Policy "default-src 'self' 'unsafe-inline' data: blob: https://cdn.lishuxue.site https://at.alicdn.com https://cdnjs.cloudflare.com https://sentry.io https://o212666.ingest.sentry.io https://upload-z1.qiniup.com https://raw.githubusercontent.com";
 
-        ssl_certificate "/etc/nginx/cert/9436935_lishuxue.site.pem";
-        ssl_certificate_key "/etc/nginx/cert/9436935_lishuxue.site.key";
+        ssl_certificate "/etc/nginx/cert/localhost.pem";
+        ssl_certificate_key "/etc/nginx/cert/localhost.key";
         ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
         ssl_ciphers AES128-SHA:AES256-SHA:RC4-SHA:DES-CBC3-SHA:RC4-MD5;
         ssl_prefer_server_ciphers on;
