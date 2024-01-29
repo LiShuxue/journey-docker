@@ -21,3 +21,4 @@ EXPOSE 443
 # 可以通过 docker build -t lishuxue/journey-nginx . 来创建本地镜像
 # 通过 docker run -d -p 80:80 -p 443:443 --rm --name journey-nginx lishuxue/journey-nginx 来运行此镜像
 # 通过 docker exec -it fdba3 sh 进入容器内部
+# 通过 docker logs 1655aa70924e 来查看nginx日志
