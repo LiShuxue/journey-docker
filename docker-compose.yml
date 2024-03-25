@@ -75,6 +75,7 @@ services:
 # 创建一个网络，down命令停止时会删除创建的网络
 networks:
   journey-network:
+    name: journey-network
     driver: bridge
 # docker compose up -d 启动
 # docker compose down 停止
