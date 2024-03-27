@@ -9,7 +9,7 @@ RUN rm -rf ${NGINX_PATH}/nginx.conf
 RUN rm -rf ${NGINX_PATH}/conf.d
 
 # 复制新的配置文件
-COPY ./nginx.conf.dev ${NGINX_PATH}/nginx.conf
+COPY ./nginx.dev.conf ${NGINX_PATH}/nginx.conf
 
 # 复制证书
 COPY ./cert/ ${NGINX_PATH}/cert/
@@ -18,6 +18,6 @@ COPY ./cert/ ${NGINX_PATH}/cert/
 EXPOSE 80
 EXPOSE 443
 
-# 可以通过 docker build -t journey-nginx-dev . 来创建本地镜像
-# 通过 docker run -d -p 80:80 -p 443:443 --name journey-nginx-dev journey-nginx-dev 来运行此镜像
+# 可以通过 docker build -t journey-nginx:dev . 来创建本地镜像
+# 通过 docker run -d -p 80:80 -p 443:443 --name journey-nginx journey-nginx:dev 来运行此镜像
 # 通过 docker exec -it fdba3 sh 进入容器内部

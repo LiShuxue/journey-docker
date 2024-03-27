@@ -9,19 +9,19 @@ RUN rm -rf ${NGINX_PATH}/nginx.conf
 RUN rm -rf ${NGINX_PATH}/conf.d
 
 # 复制新的配置文件
-COPY ./nginx.conf ${NGINX_PATH}/
+COPY ./nginx.dev.conf ${NGINX_PATH}/nginx.conf
 
 # 工作目录
-WORKDIR /journey-client
+WORKDIR /journey-admin
 
 # 创建dist文件夹
 RUN mkdir dist
 
-# 将容器的 /journey-client/dist 文件夹挂载出去
-VOLUME /journey-client/dist
+# 将容器的 /journey-admin/dist 文件夹挂载出去
+VOLUME /journey-admin/dist
 
 # 不需要暴露端口，因为前面有单独的nginx反向代理
 
-# 可以通过 docker build -t journey-client:dev . 来创建本地镜像
-# 通过 docker run -d --rm --name journey-client journey-client:dev 来运行此镜像
+# 可以通过 docker build -t journey-admin:dev . 来创建本地镜像
+# 通过 docker run -d --name journey-admin --rm journey-admin:dev 来运行此镜像
 # 通过 docker exec -it fdba3 sh 进入容器内部

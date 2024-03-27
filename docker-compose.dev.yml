@@ -5,8 +5,9 @@ name: journey-project
 services:
   # journey-client 服务
   journey-client:
-    # 使用该镜像创建容器
-    image: lishuxue/journey-client
+    # 使用该镜像创建容器，镜像名称后面不加:latest标签，Docker 默认会使用latest标签的镜像
+    image: journey-client:dev
+
     # 容器名称
     container_name: journey-client
     # 挂载的目录，主机：容器
@@ -18,14 +19,16 @@ services:
       - journey-network
     # 自动重启，除非是手动停止了，否则容器内部错误都会自动重启
     restart: unless-stopped
-    # 容器不存在时可以先创建镜像
-    # build:
-    #   # 指定Dockerfile的构建上下文
-    #   context: ./nginx-client
-    #   dockerfile: Dockerfile
+    # 容器不存在时会先创建镜像，默认创建latest标签
+    build:
+      # 指定Dockerfile的构建上下文
+      context: ./nginx-client
+      dockerfile: Dockerfile.dev
+      tags:
+        - journey-client:dev
 
   journey-admin:
-    image: lishuxue/journey-admin
+    image: journey-admin:dev
     container_name: journey-admin
     volumes:
       # 仅用于本地调试
@@ -33,13 +36,15 @@ services:
     networks:
       - journey-network
     restart: unless-stopped
-    # build:
-    #   context: ./nginx-admin
-    #   dockerfile: Dockerfile
+    build:
+      context: ./nginx-admin
+      dockerfile: Dockerfile.dev
+      tags:
+        - journey-admin:dev
 
-  journey-nginx-dev:
-    image: journey-nginx-dev
-    container_name: journey-nginx-dev
+  journey-nginx:
+    image: journey-nginx:dev
+    container_name: journey-nginx
     # 容器启动时映射的端口号，主机:容器
     ports:
       - 80:80
@@ -54,6 +59,8 @@ services:
     build:
       context: ./nginx-proxy
       dockerfile: Dockerfile.dev
+      tags:
+        - journey-nginx:dev
 
   # 启动mongodb数据库，相当于使用下面docker命令
   # docker run -d --rm --name journey-mongodb -p 27017:27017 -v /root/mongodb/data/db:/data/db -v /root/project/journey/journey-mongodb:/data/configdb -v /root/mongodb/backup:/backup -e MONGO_INITDB_ROOT_USERNAME=lishuxue -e MONGO_INITDB_ROOT_PASSWORD=lishuxue --network journey-project_journey-network mongo --config /data/configdb/mongod.conf
