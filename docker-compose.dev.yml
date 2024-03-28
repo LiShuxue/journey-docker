@@ -81,6 +81,25 @@ services:
       - journey-network
     restart: unless-stopped
 
+  journey-server:
+    image: journey-server:dev
+    container_name: journey-server
+    volumes:
+      - /Users/lishuxue/Documents/study/journey/journey-server/logs:/journey-server/logs
+      - /Users/lishuxue/Documents/study/journey/journey-server/dist:/journey-server/dist
+    ports:
+      - 4000:4000
+    networks:
+      - journey-network
+    restart: unless-stopped
+    depends_on:
+      - journey-mongodb 
+    build:
+      context: ../journey-server
+      dockerfile: Dockerfile.dev
+      tags:
+        - journey-server:dev
+
 # 创建一个网络，down命令停止时会删除创建的网络
 networks:
   journey-network:
