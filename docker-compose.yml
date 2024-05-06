@@ -72,19 +72,19 @@ services:
       - journey-network
     restart: unless-stopped
 
-  # journey-server:
-  #   image: lishuxue/journey-server:latest
-  #   container_name: journey-server
-  #   volumes:
-  #     - /root/project/journey/journey-server/logs:/journey-server/logs
-  #     - /root/project/journey/journey-server/dist:/journey-server/dist
-  #   ports:
-  #     - 4000:4000
-  #   networks:
-  #     - journey-network
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - journey-mongodb 
+  journey-server:
+    image: lishuxue/journey-server:latest
+    container_name: journey-server
+    volumes:
+      - /root/project/journey/journey-server/logs:/journey-server/logs
+      - /root/project/journey/journey-server/dist:/journey-server/dist
+    ports:
+      - 4000:4000
+    networks:
+      - journey-network
+    restart: unless-stopped
+    depends_on:
+      - journey-mongodb 
 
 # 创建一个网络，down命令停止时会删除创建的网络
 networks:
