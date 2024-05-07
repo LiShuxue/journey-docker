@@ -78,6 +78,8 @@ services:
     volumes:
       - /root/project/journey/journey-server/logs:/journey-server/logs
       - /root/project/journey/journey-server/dist:/journey-server/dist
+      - /root/mongodb:/root/mongodb
+      - /root/project:/root/project
     ports:
       - 4000:4000
     networks:
