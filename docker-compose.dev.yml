@@ -63,7 +63,7 @@ services:
         - journey-nginx:dev
 
   # 启动mongodb数据库，相当于使用下面docker命令
-  # docker run -d --rm --name journey-mongodb -p 27017:27017 -v /root/mongodb/data/db:/data/db -v /root/project/journey/journey-mongodb:/data/configdb -v /root/mongodb/backup:/backup -e MONGO_INITDB_ROOT_USERNAME=lishuxue -e MONGO_INITDB_ROOT_PASSWORD=lishuxue --network journey-project_journey-network mongo --config /data/configdb/mongod.conf
+  # docker run -d --rm --name journey-mongodb -p 27017:27017 -v /root/mongodb/data/db:/data/db -v /root/project/journey/journey-mongodb:/data/configdb -v /root/mongodb/backup:/backup -e MONGO_INITDB_ROOT_USERNAME=lishuxue -e MONGO_INITDB_ROOT_PASSWORD=lishuxue --network journey-project_journey-network mongo:7.0.7-jammy --config /data/configdb/mongod.conf
   journey-mongodb:
     image: mongo:7.0.7-jammy
     container_name: journey-mongodb
