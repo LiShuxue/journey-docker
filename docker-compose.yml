@@ -78,8 +78,8 @@ services:
     volumes:
       - /root/project/journey/journey-server/logs:/journey-server/logs
       - /root/project/journey/journey-server/dist:/journey-server/dist
-    ports:
-      - 4000:4000
+    # ports:
+    #   - 4000:4000
     networks:
       - journey-network
     restart: unless-stopped
