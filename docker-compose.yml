@@ -80,6 +80,7 @@ services:
       - /root/project/journey/journey-server/dist:/journey-server/dist
       - /root/mongodb:/root/mongodb
       - /root/project:/root/project
+      - /var/run/docker.sock:/var/run/docker.sock # 将Docker守护进程的socket文件挂载到容器内部，这样容器内的Docker客户端就可以直接与宿主机的Docker守护进程通信
     ports:
       - 4000:4000
     networks:
