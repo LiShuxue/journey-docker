@@ -73,7 +73,7 @@ services:
     restart: unless-stopped
 
   journey-server:
-    image: lishuxue/journey-server:latest
+    image: registry.cn-beijing.aliyuncs.com/lishuxue/journey-server:latest
     container_name: journey-server
     volumes:
       - /root/project/journey/journey-server/logs:/journey-server/logs
