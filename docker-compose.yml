@@ -6,7 +6,7 @@ services:
   # journey-client 服务
   journey-client:
     # 使用该镜像创建容器，镜像名称后面不加:latest标签，Docker 默认会使用latest标签的镜像
-    image: lishuxue/journey-client:latest
+    image: registry.cn-beijing.aliyuncs.com/lishuxue/journey-client:latest
     # 容器名称
     container_name: journey-client
     # 挂载的目录，主机：容器
@@ -24,7 +24,7 @@ services:
     #   dockerfile: Dockerfile
 
   journey-admin:
-    image: lishuxue/journey-admin:latest
+    image: registry.cn-beijing.aliyuncs.com/lishuxue/journey-admin:latest
     container_name: journey-admin
     volumes:
       - /root/project/journey/journey-admin/dist:/journey-admin/dist
@@ -36,7 +36,7 @@ services:
     #   dockerfile: Dockerfile
 
   journey-nginx:
-    image: lishuxue/journey-nginx:latest
+    image: registry.cn-beijing.aliyuncs.com/lishuxue/journey-nginx:latest
     container_name: journey-nginx
     # 容器启动时映射的端口号，主机:容器
     ports:
