@@ -6,37 +6,44 @@ services:
   # journey-client 服务
   journey-client:
     # 使用该镜像创建容器，镜像名称后面不加:latest标签，Docker 默认会使用latest标签的镜像
-    image: registry.cn-beijing.aliyuncs.com/lishuxue/journey-client:latest
+    image: journey-client:dev
+
     # 容器名称
     container_name: journey-client
     # 挂载的目录，主机：容器
     volumes:
-      - /root/project/journey/journey-client/dist:/journey-client/dist
+      # 仅用于本地调试
+      - d:/study/journey/journey-client/dist:/journey-client/dist
     # 容器使用的网络
     networks:
       - journey-network
     # 自动重启，除非是手动停止了，否则容器内部错误都会自动重启
     restart: unless-stopped
-    # 容器不存在时可以先创建镜像
-    # build:
-    #   # 指定Dockerfile的构建上下文
-    #   context: ./nginx-client
-    #   dockerfile: Dockerfile
+    # 容器不存在时会先创建镜像，默认创建latest标签
+    build:
+      # 指定Dockerfile的构建上下文
+      context: ./nginx-client
+      dockerfile: Dockerfile.dev
+      tags:
+        - journey-client:dev
 
   journey-admin:
-    image: registry.cn-beijing.aliyuncs.com/lishuxue/journey-admin:latest
+    image: journey-admin:dev
     container_name: journey-admin
     volumes:
-      - /root/project/journey/journey-admin/dist:/journey-admin/dist
+      # 仅用于本地调试
+      - d:/study/journey/journey-admin/dist:/journey-admin/dist
     networks:
       - journey-network
     restart: unless-stopped
-    # build:
-    #   context: ./nginx-admin
-    #   dockerfile: Dockerfile
+    build:
+      context: ./nginx-admin
+      dockerfile: Dockerfile.dev
+      tags:
+        - journey-admin:dev
 
   journey-nginx:
-    image: registry.cn-beijing.aliyuncs.com/lishuxue/journey-nginx:latest
+    image: journey-nginx:dev
     container_name: journey-nginx
     # 容器启动时映射的端口号，主机:容器
     ports:
@@ -49,9 +56,11 @@ services:
       - journey-client
       - journey-admin
     restart: unless-stopped
-    # build:
-    #   context: ./nginx-proxy
-    #   dockerfile: Dockerfile
+    build:
+      context: ./nginx-proxy
+      dockerfile: Dockerfile.dev
+      tags:
+        - journey-nginx:dev
 
   # 启动mongodb数据库，相当于使用下面docker命令
   # docker run -d --rm --name journey-mongodb -p 27017:27017 -v /root/mongodb/data/db:/data/db -v /root/project/journey/journey-mongodb:/data/configdb -v /root/mongodb/backup:/backup -e MONGO_INITDB_ROOT_USERNAME=lishuxue -e MONGO_INITDB_ROOT_PASSWORD=lishuxue --network journey-project_journey-network mongo:7-jammy --config /data/configdb/mongod.conf
@@ -61,9 +70,9 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - /root/mongodb/data/db:/data/db
-      - /root/project/journey/journey-docker/mongodb:/data/configdb
-      - /root/mongodb/backup:/backup # 用来备份
+      - d:/software/mongodb/data/db:/data/db
+      - d:/study/journey/journey-docker/mongodb:/data/configdb
+      - d:/software/mongodb/backup:/backup # 用来备份
     environment:
       - MONGO_INITDB_ROOT_USERNAME=lishuxue # 在admin数据库中创建新用户和密码
       - MONGO_INITDB_ROOT_PASSWORD=lishuxue
@@ -73,13 +82,13 @@ services:
     restart: unless-stopped
 
   journey-server:
-    image: registry.cn-beijing.aliyuncs.com/lishuxue/journey-server:latest
+    image: journey-server:dev
     container_name: journey-server
     volumes:
-      - /root/project/journey/journey-server/logs:/journey-server/logs
-      - /root/project/journey/journey-server/dist:/journey-server/dist
-      - /root/mongodb:/root/mongodb
-      - /root/project:/root/project
+      - d:/study/journey/journey-server/logs:/journey-server/logs
+      - d:/study/journey/journey-server/dist:/journey-server/dist
+      - d:/software/mongodb:/root/mongodb
+      - d:/study/journey:/root/project
       - /var/run/docker.sock:/var/run/docker.sock # 将Docker守护进程的socket文件挂载到容器内部，这样容器内的Docker客户端就可以直接与宿主机的Docker守护进程通信
     ports:
       - 4000:4000
@@ -88,11 +97,16 @@ services:
     restart: unless-stopped
     depends_on:
       - journey-mongodb 
+    build:
+      context: ../journey-server
+      dockerfile: Dockerfile.dev
+      tags:
+        - journey-server:dev
 
 # 创建一个网络，down命令停止时会删除创建的网络
 networks:
   journey-network:
     name: journey-network
     driver: bridge
-# docker compose up -d 启动
-# docker compose down 停止
+# docker compose -f docker-compose-win.dev.yml up -d
+# docker compose -f docker-compose-win.dev.yml down

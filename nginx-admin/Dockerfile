@@ -1,5 +1,5 @@
 # 基础镜像
-FROM nginx:1.25.4-alpine3.18
+FROM nginx:1.27.2-alpine
 
 # Nginx目录
 ENV NGINX_PATH=/etc/nginx
