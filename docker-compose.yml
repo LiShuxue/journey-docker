@@ -56,7 +56,7 @@ services:
   # 启动mongodb数据库，相当于使用下面docker命令
   # docker run -d --rm --name journey-mongodb -p 27017:27017 -v /root/mongodb/data/db:/data/db -v /root/project/journey/journey-mongodb:/data/configdb -v /root/mongodb/backup:/backup -e MONGO_INITDB_ROOT_USERNAME=lishuxue -e MONGO_INITDB_ROOT_PASSWORD=lishuxue --network journey-project_journey-network mongo:7-jammy --config /data/configdb/mongod.conf
   journey-mongodb:
-    image: mongo:7-jammy
+    image: mongo:7-jammy # docker hub 对大陆封禁了，ECS服务器拉不到这个东西了。本地可以连代理拉，pull下来之后导出，再上传到服务器，再导入。导出命令： docker save -o D:\software\mongodb\mongo.tar.gz mongo:7-jammy   上传命令：scp D:\software\mongodb\mongo.tar.gz root@lishuxue.site:/root/mongodb   导入命令：docker load -i /root/mongodb/mongo.tar.gz
     container_name: journey-mongodb
     ports:
       - 27017:27017
